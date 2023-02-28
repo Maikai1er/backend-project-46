@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import fs from 'fs';
 
 const program = new Command();
 
@@ -13,3 +14,11 @@ program
   .option('-f, --format <type>', 'output format')
 
 program.parse();
+
+const filepath1 = '../filesToCompare/file1.json';
+
+const genDiff = (filepath1, filepath2) => {
+  const obj1 = JSON.parse(fs.readFileSync(path.resolve(filepath1)));
+  const obj2 = JSON.parse(fs.readFileSync(path.resolve(filepath2)));
+
+}
