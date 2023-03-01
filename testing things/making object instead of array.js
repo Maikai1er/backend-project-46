@@ -38,5 +38,9 @@ const resultPush = sortedKeys.reduce((acc, key) => {
 
 console.log(resultPush);
 
-const finalResult = resultPush.join('\n');
-console.log(finalResult)
+const string = resultPush.join('\n  ');
+
+const result = `{ \n  ${string}\n}`
+
+console.log(result)
+
