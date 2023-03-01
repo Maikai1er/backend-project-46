@@ -12,12 +12,26 @@ const keys2 = Object.keys(obj2);
 
 const allkeys = keys1.concat(keys2);
 
-console.log(allkeys)
-
 const uniqKeys = _.uniq(allkeys);
 
-console.log(uniqKeys)
+const sortedKeys = uniqKeys.sort();
 
-const sortedKeys = uniqKeys.sort()
+console.log(sortedKeys);
+const result = [];
 
-console.log(sortedKeys)
+const resultPush = sortedKeys.map((key) => {
+  //если в первом объекте есть ключ, во втором нет
+  if (_.has(obj1, key) && !_.has(obj2, key)) result.push(`${key}: ${obj1[key]}`);
+  //если во втором объекте есть ключ, в первом нет
+  if (!_.has(obj1, key) && _.has(obj2, key)) result.push(`${key}: ${obj2[key]}`);
+  //если ключ есть в обоих объектах
+  if (_.has(obj1, key) && _.has(obj2, key)) {
+    if (_.isEqual(obj1[key], obj2[key])) result.push(`${key}: ${obj1[key]}`);
+    else {
+      result.push(`${key}: ${obj1[key]}`)
+      result.push(`${key}: ${obj2[key]}`)
+    }
+  }
+})
+
+console.log(result);
