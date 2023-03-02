@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import fs from 'fs';
+import getDiff from "../src/getDiff.js";
 
 const program = new Command();
 
@@ -12,13 +13,10 @@ program
   .description('Compares two configuration files and shows a difference.')
   .version('0.1', '-V, --version', 'output the version number')
   .option('-f, --format <type>', 'output format')
+  .action((filepath1, filepath2) => console.log(getDiff(filepath1, filepath2)));
 
 program.parse();
 
-const filepath1 = '../filesToCompare/file1.json';
 
-const genDiff = (filepath1, filepath2) => {
-  const obj1 = JSON.parse(fs.readFileSync(path.resolve(filepath1)));
-  const obj2 = JSON.parse(fs.readFileSync(path.resolve(filepath2)));
-
-}
+//const filepath1 = '../filesToCompare/file1.json';
+//const filepath2 = '../filesToCompare/file2.json';

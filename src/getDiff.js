@@ -1,0 +1,44 @@
+import fs from 'fs';
+import _ from 'lodash';
+
+const getDiff = (filepath1, filepath2) => {
+  const obj1 = JSON.parse(fs.readFileSync(filepath1));
+  const obj2 = JSON.parse(fs.readFileSync(filepath2));
+
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  const allKeys = keys1.concat(keys2);
+
+  const uniqKeys = _.uniq(allKeys);
+
+  const sortedKeys = uniqKeys.sort();
+
+  const resultPush = sortedKeys.reduce((acc, key) => {
+    //если в первом объекте есть ключ, во втором нет
+    if (_.has(obj1, key) && !_.has(obj2, key)) acc.push(`- ${key}: ${obj1[key]}`);
+    //если во втором объекте есть ключ, в первом нет
+    if (!_.has(obj1, key) && _.has(obj2, key)) acc.push(`+ ${key}: ${obj2[key]}`);
+    //если ключ есть в обоих объектах
+    if (_.has(obj1, key) && _.has(obj2, key)) {
+      //если значения совпадают
+      if (_.isEqual(obj1[key], obj2[key])) acc.push(`  ${key}: ${obj1[key]}`);
+      //если значения разные
+      else {
+        acc.push(`- ${key}: ${obj1[key]}`)
+        acc.push(`+ ${key}: ${obj2[key]}`)
+      }
+    }
+    return acc;
+  }, [])
+
+  const string = resultPush.join('\n  ');
+
+  const result = `{ \n  ${string}\n}`
+
+  return result;
+}
+
+export default getDiff;
+
+// console.log(getDiff('../filesToCompare/file1.json', '../filesToCompare/file2.json'))
