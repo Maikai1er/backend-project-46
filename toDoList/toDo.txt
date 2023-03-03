@@ -1,0 +1,2 @@
+1. Somehow Works without process.cwd();
+2. Third step (Реализуйте возможность использования пакета как библиотеки.)
