@@ -19,28 +19,27 @@ const sortedKeys = uniqKeys.sort();
 console.log(sortedKeys);
 
 const resultPush = sortedKeys.reduce((acc, key) => {
-  //если в первом объекте есть ключ, во втором нет
+  // если в первом объекте есть ключ, во втором нет
   if (_.has(obj1, key) && !_.has(obj2, key)) acc.push(`- ${key}: ${obj1[key]}`);
-  //если во втором объекте есть ключ, в первом нет
+  // если во втором объекте есть ключ, в первом нет
   if (!_.has(obj1, key) && _.has(obj2, key)) acc.push(`+ ${key}: ${obj2[key]}`);
-  //если ключ есть в обоих объектах
+  // если ключ есть в обоих объектах
   if (_.has(obj1, key) && _.has(obj2, key)) {
-    //если значения совпадают
+    // если значения совпадают
     if (_.isEqual(obj1[key], obj2[key])) acc.push(`  ${key}: ${obj1[key]}`);
-    //если значения разные
+    // если значения разные
     else {
-      acc.push(`- ${key}: ${obj1[key]}`)
-      acc.push(`+ ${key}: ${obj2[key]}`)
+      acc.push(`- ${key}: ${obj1[key]}`);
+      acc.push(`+ ${key}: ${obj2[key]}`);
     }
   }
   return acc;
-}, [])
+}, []);
 
 console.log(resultPush);
 
 const string = resultPush.join('\n  ');
 
-const result = `{ \n  ${string}\n}`
+const result = `{ \n  ${string}\n}`;
 
-console.log(result)
-
+console.log(result);

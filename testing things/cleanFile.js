@@ -20,18 +20,18 @@ console.log(sortedKeys);
 const result = [];
 
 const resultPush = sortedKeys.map((key) => {
-  //если в первом объекте есть ключ, во втором нет
+  // если в первом объекте есть ключ, во втором нет
   if (_.has(obj1, key) && !_.has(obj2, key)) result.push(`${key}: ${obj1[key]}`);
-  //если во втором объекте есть ключ, в первом нет
+  // если во втором объекте есть ключ, в первом нет
   if (!_.has(obj1, key) && _.has(obj2, key)) result.push(`${key}: ${obj2[key]}`);
-  //если ключ есть в обоих объектах
+  // если ключ есть в обоих объектах
   if (_.has(obj1, key) && _.has(obj2, key)) {
     if (_.isEqual(obj1[key], obj2[key])) result.push(`${key}: ${obj1[key]}`);
     else {
-      result.push(`${key}: ${obj1[key]}`)
-      result.push(`${key}: ${obj2[key]}`)
+      result.push(`${key}: ${obj1[key]}`);
+      result.push(`${key}: ${obj2[key]}`);
     }
   }
-})
+});
 
 console.log(result);

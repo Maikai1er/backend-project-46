@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import fs from 'fs';
-import getDiff from "../src/getDiff.js";
+import getDiff from '../src/getDiff.js';
 
 const program = new Command();
 
@@ -17,6 +16,5 @@ program
 
 program.parse();
 
-
-//const filepath1 = '../filesToCompare/file1.json';
-//const filepath2 = '../filesToCompare/file2.json';
+// const filepath1 = '../filesToCompare/file1.json';
+// const filepath2 = '../filesToCompare/file2.json';

@@ -1,3 +1,3 @@
 const obj = {};
 obj.value = 3;
-console.log(obj)
+console.log(obj);
