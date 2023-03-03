@@ -41,4 +41,4 @@ const getDiff = (filepath1, filepath2) => {
 
 export default getDiff;
 
-// console.log(getDiff('../filesToCompare/file1.json', '../filesToCompare/file2.json'))
+// console.log(getDiff('../__fixtures__/file1.json', '../__fixtures__/file2.json'))

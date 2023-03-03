@@ -1,8 +1,8 @@
 import fs from 'fs';
 import _ from 'lodash';
 
-const filepath1 = '../filesToCompare/file1.json';
-const filepath2 = '../filesToCompare/file2.json';
+const filepath1 = '../__fixtures__/file1.json';
+const filepath2 = '../__fixtures__/file2.json';
 
 const obj1 = JSON.parse(fs.readFileSync(filepath1));
 const obj2 = JSON.parse(fs.readFileSync(filepath2));
