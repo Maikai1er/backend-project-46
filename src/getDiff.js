@@ -1,9 +1,9 @@
-import fs from 'fs';
 import _ from 'lodash';
+import parser from './parser.js';
 
 const getDiff = (filepath1, filepath2) => {
-  const obj1 = JSON.parse(fs.readFileSync(filepath1));
-  const obj2 = JSON.parse(fs.readFileSync(filepath2));
+  const obj1 = parser(filepath1);
+  const obj2 = parser(filepath2);
 
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
@@ -41,4 +41,3 @@ const getDiff = (filepath1, filepath2) => {
 
 export default getDiff;
 
-// console.log(getDiff('../__fixtures__/file1.json', '../__fixtures__/file2.json'))

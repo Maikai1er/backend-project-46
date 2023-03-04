@@ -1,1 +1,2 @@
 NODE_OPTIONS=--experimental-vm-modules npx jest --detectOpenHandles  === TO RUN TESTS
+gendiff '__fixtures__/file1.js' '__fixtures__/file2.js'  === TO RUN GENDIFF

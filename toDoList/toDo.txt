@@ -1,3 +1,5 @@
 1. Somehow Works without process.cwd();
 2. Third step (Реализуйте возможность использования пакета как библиотеки.)
 3. Figure out continuous integration
+4. Для построения полных путей в тестах используйте __dirname РАЗОБРАТЬСЯ
+5. Secrets, step 4.
