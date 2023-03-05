@@ -1,10 +1,7 @@
 import _ from 'lodash';
 import parser from './parser.js';
 
-const getDiff = (filepath1, filepath2) => {
-  const obj1 = parser(filepath1);
-  const obj2 = parser(filepath2);
-
+const getDiff = (obj1, obj2) => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
 
@@ -39,4 +36,10 @@ const getDiff = (filepath1, filepath2) => {
   return result;
 };
 
-export default getDiff;
+const returnDiff = (file1, file2) => {
+  const obj1 = parser(file1);
+  const obj2 = parser(file2);
+  return getDiff(obj1, obj2);
+};
+
+export default returnDiff;

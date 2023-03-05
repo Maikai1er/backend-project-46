@@ -6,7 +6,7 @@ const parser = (file) => {
   const filepath = path.resolve(process.cwd(), '__fixtures__', file);
   if (filepath.endsWith('json')) return JSON.parse(fs.readFileSync(filepath));
   if (filepath.endsWith('yml' || 'yaml')) return yaml.load(fs.readFileSync(filepath));
-  return 'File extension is not supported';
+  return null;
 };
 
 export default parser;
