@@ -4,10 +4,9 @@ import * as path from 'path';
 
 const parser = (file) => {
   const filepath = path.resolve(process.cwd(), '__fixtures__', file);
-  const fileExtension = filepath.split('.').at(-1);
-  if (fileExtension === 'json') return JSON.parse(fs.readFileSync(filepath));
-  if (fileExtension === 'yml' || fileExtension === 'yaml') return yaml.load(fs.readFileSync(filepath));
-  return null;
+  if (filepath.endsWith('json')) return JSON.parse(fs.readFileSync(filepath));
+  if (filepath.endsWith('yml' || 'yaml')) return yaml.load(fs.readFileSync(filepath));
+  return 'File extension is not supported';
 };
 
 export default parser;
