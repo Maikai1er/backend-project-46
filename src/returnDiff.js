@@ -2,38 +2,34 @@ import _ from 'lodash';
 import parser from './parser.js';
 
 const getDiff = (obj1, obj2) => {
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-
-  const allKeys = keys1.concat(keys2);
-
-  const uniqKeys = _.uniq(allKeys);
-
-  const sortedKeys = uniqKeys.sort();
-
-  const resultPush = sortedKeys.reduce((acc, key) => {
-    // если в первом объекте есть ключ, во втором нет
-    if (_.has(obj1, key) && !_.has(obj2, key)) acc.push(`- ${key}: ${obj1[key]}`);
-    // если во втором объекте есть ключ, в первом нет
-    if (!_.has(obj1, key) && _.has(obj2, key)) acc.push(`+ ${key}: ${obj2[key]}`);
-    // если ключ есть в обоих объектах
-    if (_.has(obj1, key) && _.has(obj2, key)) {
-      // если значения совпадают
-      if (_.isEqual(obj1[key], obj2[key])) acc.push(`  ${key}: ${obj1[key]}`);
-      // если значения разные
+  const commonArray = [];
+  for (const key in obj1) {
+    // Если ключ только в 1 объекте
+    if (!Object.hasOwn(obj2, key)) commonArray.push(`${key}: ${obj1[key]}-`);
+    // Если ключ в обоих объектах
+    if (Object.hasOwn(obj2, key)) {
+      // Если значения одинаковые
+      if (obj1[key] === obj2[key]) commonArray.push(`${key}: ${obj1[key]} `);
       else {
-        acc.push(`- ${key}: ${obj1[key]}`);
-        acc.push(`+ ${key}: ${obj2[key]}`);
+        commonArray.push(`${key}: ${obj1[key]}-`);
+        commonArray.push(`${key}: ${obj2[key]}+`);
       }
     }
-    return acc;
-  }, []);
+  }
+  // Если ключ только во 2 объекте
+  for (const key in obj2) {
+    if (!Object.hasOwn(obj1, key)) commonArray.push(`${key}: ${obj2[key]}+`);
+  }
+  const sortedArray = commonArray.sort();
+  const result = [];
+  for (let i = 0; i < sortedArray.length; i += 1) {
+    const lastSymbol = sortedArray[i].slice(sortedArray[i].length - 1, sortedArray[i].length);
+    result.push(`${lastSymbol} ${sortedArray[i].slice(0, -1)}`);
+  }
 
-  const string = resultPush.join('\n  ');
+  const string = result.join('\n  ');
 
-  const result = `{ \n  ${string}\n}`;
-
-  return result;
+  return `{ \n  ${string}\n}`;
 };
 
 const returnDiff = (file1, file2) => {
