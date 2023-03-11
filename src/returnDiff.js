@@ -1,35 +1,38 @@
 import _ from 'lodash';
 import parser from './parser.js';
 
-const getDiff = (obj1, obj2) => {
-  const commonArray = [];
-  for (const key in obj1) {
-    // Если ключ только в 1 объекте
-    if (!Object.hasOwn(obj2, key)) commonArray.push(`${key}: ${obj1[key]}-`);
-    // Если ключ в обоих объектах
-    if (Object.hasOwn(obj2, key)) {
-      // Если значения одинаковые
-      if (obj1[key] === obj2[key]) commonArray.push(`${key}: ${obj1[key]} `);
-      else {
-        commonArray.push(`${key}: ${obj1[key]}-`);
-        commonArray.push(`${key}: ${obj2[key]}+`);
+const getDiff = (object1, object2) => {
+  const constructObject = (key, type, value) => ({ key, type, value });
+  const constructChildren = (key, type, child1, child2) => ({
+    key, type, child1, child2,
+  });
+  const createDiff = (obj1, obj2) => {
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    const allKeys = keys1.concat(keys2);
+    const uniqKeys = _.uniq(allKeys);
+    const sortedKeys = uniqKeys.sort();
+
+    const resultPush = sortedKeys.map((key) => {
+      if (_.isObject(obj1[key]) || _.isObject(obj2[key])) {
+        return (constructChildren(key, 'parent', createDiff(obj1[key], obj2[key])));
       }
-    }
-  }
-  // Если ключ только во 2 объекте
-  for (const key in obj2) {
-    if (!Object.hasOwn(obj1, key)) commonArray.push(`${key}: ${obj2[key]}+`);
-  }
-  const sortedArray = commonArray.sort();
-  const result = [];
-  for (let i = 0; i < sortedArray.length; i += 1) {
-    const lastSymbol = sortedArray[i].slice(sortedArray[i].length - 1, sortedArray[i].length);
-    result.push(`${lastSymbol} ${sortedArray[i].slice(0, -1)}`);
-  }
-
-  const string = result.join('\n  ');
-
-  return `{ \n  ${string}\n}`;
+      // если в первом объекте есть ключ, во втором нет
+      if (!_.has(obj2, key)) return constructObject(key, 'removed', obj1[key]);
+      // если во втором объекте есть ключ, в первом нет
+      if (!_.has(obj1, key)) return constructObject(key, 'added', obj2[key]);
+      // если ключ есть в обоих объектах
+      if (_.has(obj1, key) && _.has(obj2, key)) {
+      // если значения совпадают
+        if (_.isEqual(obj1[key], obj2[key])) return constructObject(key, 'unchanged', obj1[key]);
+        // если значения разные
+        return constructObject(key, 'changed', obj1[key]);
+      }
+      return resultPush;
+    });
+  };
+  return createDiff(object1, object2);
 };
 
 const returnDiff = (file1, file2) => {
