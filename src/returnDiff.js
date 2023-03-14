@@ -37,7 +37,8 @@ const getDiff = (object1, object2) => {
 const returnDiff = (file1, file2) => {
   const obj1 = parser(file1);
   const obj2 = parser(file2);
-  return getDiff(obj1, obj2);
+  const result = JSON.stringify(getDiff(obj1, obj2), null, 2);
+  return result;
 };
 
 export default returnDiff;
