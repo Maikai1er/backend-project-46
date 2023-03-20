@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import parser from './parser.js';
+import stylish from '../formatters/stylish.js';
 
 const getDiff = (object1, object2) => {
   const constructObject = (key, type, value) => ({ key, type, value });
@@ -34,10 +35,11 @@ const getDiff = (object1, object2) => {
   return constructChildren('/', 'root', createDiff(object1, object2));
 };
 
-const returnDiff = (file1, file2) => {
+const returnDiff = (file1, file2, formatter) => {
   const obj1 = parser(file1);
   const obj2 = parser(file2);
-  const result = JSON.stringify(getDiff(obj1, obj2), null, 2);
+  const result = getDiff(obj1, obj2);
+  if (formatter === 'stylish') return stylish(result);
   return result;
 };
 

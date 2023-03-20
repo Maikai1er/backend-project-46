@@ -1,19 +1,12 @@
-import fs from 'fs';
-import _ from 'lodash';
-
-const object = JSON.parse(fs.readFileSync('../__fixtures__/diff.json'));
-
 const constructor = (obj) => {
   const constructKey = (key, type) => {
     if (type === 'added') return `+ ${key}`;
     if (type === 'removed') return `- ${key}`;
-    // unnecessary, to remove
-    if (type === 'unchanged') return `  ${key}`;
     return `  ${key}`;
   };
   const constructChangedKey = (changedKey, valueType) => {
     if (valueType === 'old') return `- ${changedKey}`;
-    if (valueType === 'new') return `+ ${changedKey}`;
+    return `+ ${changedKey}`;
   };
   const result = {};
   for (let i = 0; i < obj.children.length; i += 1) {
@@ -29,7 +22,6 @@ const constructor = (obj) => {
       result[newKey2] = newValue;
     } else {
       const { value } = obj.children[i];
-      // if (_.isObject(value)) constructor(value);
       newKey = constructKey(key, type);
       result[newKey] = value;
     }
@@ -39,16 +31,14 @@ const constructor = (obj) => {
   }
   return result;
 };
-const result = JSON.stringify(constructor(object), null, '  ');
-const finalResult = result.replaceAll('"', '').replaceAll(',', '');
 
-const spaceCounter = (string) => {
+const stylish = (object) => {
+  const string = JSON.stringify(constructor(object), null, 1).replaceAll('"', '').replaceAll(',', '');
   let result = '{';
-  const stack = [];
   let indexOfPlus;
   let indexOfMinus;
   let spaceCounter = 2;
-  const spaceIncreaser = 2;
+  const spaceIncreaser = 4;
   const toWorkWith = string.split('\n');
   const coll = toWorkWith.map((element) => {
     const temp = element.trim();
@@ -63,18 +53,14 @@ const spaceCounter = (string) => {
     indexOfPlus = coll[i].indexOf('+');
     if (coll[i].endsWith('{')) {
       if (indexOfPlus !== (-1) || indexOfMinus !== (-1)) {
-        spaceCounter += spaceIncreaser * 2;
-        stack.push('symbol');
+        spaceCounter += spaceIncreaser;
       } else {
-        spaceCounter += spaceIncreaser * 2;
-        stack.push('blank');
+        spaceCounter += spaceIncreaser;
       }
     }
-    if (coll[i + 1].endsWith('}')) {
-      (stack.pop() === 'symbol') ? (spaceCounter -= spaceIncreaser * 2) : (spaceCounter -= spaceIncreaser * 2);
-    }
+    if (coll[i + 1].endsWith('}')) spaceCounter -= spaceIncreaser;
   }
   return `${result}\n}`;
 };
 
-console.log(spaceCounter(finalResult));
+export default stylish;

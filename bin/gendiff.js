@@ -11,10 +11,9 @@ program
   .argument('<filepath2>')
   .description('Compares two configuration files and shows a difference.')
   .version('0.1', '-V, --version', 'output the version number')
-  .option('-f, --format <type>', 'output format')
-  .action((filepath1, filepath2) => console.log(returnDiff(filepath1, filepath2)));
+  .option('-f, --format <type>', 'output format', 'stylish')
+  .action((filepath1, filepath2) => {
+    console.log(returnDiff(filepath1, filepath2, program.opts().format));
+  });
 
 program.parse();
-
-// const filepath1 = '../__fixtures__/file1.json';
-// const filepath2 = '../__fixtures__/file2.json';
