@@ -13,12 +13,14 @@ const constructor = (obj) => {
     const { key, type } = obj.children[i];
     let newKey;
     if (type === 'changed') {
-      const { oldValue, newValue } = obj.children[i];
+      let { oldValue, newValue } = obj.children[i];
       let valueType = 'old';
       const newKey1 = constructChangedKey(key, valueType);
+      if (oldValue === '') oldValue = ' ';
       result[newKey1] = oldValue;
       valueType = 'new';
       const newKey2 = constructChangedKey(key, valueType);
+      if (newValue === '') newValue = ' ';
       result[newKey2] = newValue;
     } else {
       const { value } = obj.children[i];
