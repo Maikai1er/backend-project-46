@@ -35,8 +35,6 @@ const constructor = (obj) => {
 const stylish = (object) => {
   const string = JSON.stringify(constructor(object), null, 1).replaceAll('"', '').replaceAll(',', '');
   let result = '{';
-  let indexOfPlus;
-  let indexOfMinus;
   let spaceCounter = 2;
   const spaceIncreaser = 4;
   const toWorkWith = string.split('\n');
@@ -49,15 +47,7 @@ const stylish = (object) => {
   for (let i = 1; i < coll.length - 1; i += 1) {
     if (spaceCounter < 0) spaceCounter = 0;
     result += `\n${' '.repeat(spaceCounter)}${coll[i]}`;
-    indexOfMinus = coll[i].indexOf('-');
-    indexOfPlus = coll[i].indexOf('+');
-    if (coll[i].endsWith('{')) {
-      if (indexOfPlus !== (-1) || indexOfMinus !== (-1)) {
-        spaceCounter += spaceIncreaser;
-      } else {
-        spaceCounter += spaceIncreaser;
-      }
-    }
+    if (coll[i].endsWith('{')) spaceCounter += spaceIncreaser;
     if (coll[i + 1].endsWith('}')) spaceCounter -= spaceIncreaser;
   }
   return `${result}\n}`;
