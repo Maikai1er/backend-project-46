@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import parser from './parser.js';
-import stylish from '../formatters/stylish.js';
+import returnFormatted from './formatters/index.js';
 
 const getDiff = (object1, object2) => {
   const constructObject = (key, type, value) => ({ key, type, value });
@@ -39,8 +39,7 @@ const returnDiff = (file1, file2, formatter) => {
   const obj1 = parser(file1);
   const obj2 = parser(file2);
   const result = getDiff(obj1, obj2);
-  if (formatter === 'stylish') return stylish(result);
-  return result;
+  return returnFormatted(result, formatter);
 };
 
 export default returnDiff;

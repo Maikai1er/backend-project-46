@@ -1,7 +1,4 @@
-import fs from 'fs';
 import _ from 'lodash';
-
-const object = JSON.parse(fs.readFileSync('../__fixtures__/diff.json'));
 
 const plain = (obj) => {
   const resultConstructor = [];
@@ -43,4 +40,4 @@ const plain = (obj) => {
   return resultConstructor.join('\n');
 };
 
-console.log(plain(object));
+export default plain;

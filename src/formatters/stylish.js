@@ -37,15 +37,14 @@ const stylish = (object) => {
   let result = '{';
   let spaceCounter = 2;
   const spaceIncreaser = 4;
-  const toWorkWith = string.split('\n');
-  const coll = toWorkWith.map((element) => {
+  const toTrim = string.split('\n');
+  const coll = toTrim.map((element) => {
     const temp = element.trim();
     const res = ['{', '+', '-'].some((word) => temp.startsWith(word));
     if (res) return temp;
     return `  ${temp}`;
   });
   for (let i = 1; i < coll.length - 1; i += 1) {
-    if (spaceCounter < 0) spaceCounter = 0;
     result += `\n${' '.repeat(spaceCounter)}${coll[i]}`;
     if (coll[i].endsWith('{')) spaceCounter += spaceIncreaser;
     if (coll[i + 1].endsWith('}')) spaceCounter -= spaceIncreaser;
