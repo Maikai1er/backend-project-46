@@ -11,7 +11,7 @@ const returnFormatted = (data, format) => {
     case 'json':
       return json(data);
     default:
-      throw new Error('Unsupported format type');
+      return null;
   }
 };
 
