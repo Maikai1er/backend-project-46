@@ -1,6 +1,6 @@
 import parser from './parser.js';
 import returnFormatted from './formatters/index.js';
-import getDiff from './returnDiff.js';
+import getDiff from './getDiff.js';
 
 const returnDiff = (file1, file2, formatter) => {
   const obj1 = parser(file1);
