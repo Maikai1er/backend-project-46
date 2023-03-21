@@ -13,14 +13,12 @@ const constructor = (obj) => {
     const { key, type } = obj.children[i];
     let newKey;
     if (type === 'changed') {
-      let { oldValue, newValue } = obj.children[i];
+      const { oldValue, newValue } = obj.children[i];
       let valueType = 'old';
       const newKey1 = constructChangedKey(key, valueType);
-      if (oldValue === '') oldValue = ' ';
       result[newKey1] = oldValue;
       valueType = 'new';
       const newKey2 = constructChangedKey(key, valueType);
-      if (newValue === '') newValue = ' ';
       result[newKey2] = newValue;
     } else {
       const { value } = obj.children[i];
@@ -41,7 +39,7 @@ const stylish = (object) => {
   const spaceIncreaser = 4;
   const toTrim = string.split('\n');
   const coll = toTrim.map((element) => {
-    const temp = element.trim();
+    const temp = element.trimStart();
     const res = ['{', '+', '-'].some((word) => temp.startsWith(word));
     if (res) return temp;
     return `  ${temp}`;
