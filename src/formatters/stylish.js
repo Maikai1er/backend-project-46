@@ -4,31 +4,32 @@ const constructor = (obj) => {
     if (type === 'removed') return `- ${key}`;
     return `  ${key}`;
   };
-
   const constructChangedKey = (changedKey, valueType) => {
     if (valueType === 'old') return `- ${changedKey}`;
     return `+ ${changedKey}`;
   };
-
-  const processChild = (child) => {
-    if (child.type === 'changed') {
-      const { key, oldValue, newValue } = child;
-      return [
-        [constructChangedKey(key, 'old'), oldValue],
-        [constructChangedKey(key, 'new'), newValue],
-      ];
+  const result = {};
+  for (let i = 0; i < obj.children.length; i += 1) {
+    const { key, type } = obj.children[i];
+    let newKey;
+    if (type === 'changed') {
+      const { oldValue, newValue } = obj.children[i];
+      let valueType = 'old';
+      const newKey1 = constructChangedKey(key, valueType);
+      result[newKey1] = oldValue;
+      valueType = 'new';
+      const newKey2 = constructChangedKey(key, valueType);
+      result[newKey2] = newValue;
     } else {
-      const { key, type, value, children } = child;
-      const newKey = constructKey(key, type);
-      const result = { [newKey]: value };
-      if (children) {
-        result[newKey] = constructor(child);
-      }
-      return result;
+      const { value } = obj.children[i];
+      newKey = constructKey(key, type);
+      result[newKey] = value;
     }
-  };
-
-  return obj.children.map(processChild).reduce((acc, curr) => ({ ...acc, ...curr }), {});
+    if (obj.children[i].hasOwnProperty('children')) {
+      result[newKey] = constructor(obj.children[i]);
+    }
+  }
+  return result;
 };
 
 const stylish = (object) => {
